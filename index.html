@@ -40,7 +40,7 @@
        </li>
      </ul>
      <p>{{toBuy.testString}}</p>
-     <div class="emptyMessage">Everything is bought!</div>
+     <div class="emptyMessage" ng-show="toBuy.isToBuyListEmpty()">Everything is bought!</div>
     </div>
 
     <!-- Already Bought List -->
@@ -53,7 +53,7 @@
        </li>
      </ul>
      <p>{{bought.testString}}</p>
-     <div class="emptyMessage">Nothing bought yet.</div>
+     <div class="emptyMessage" ng-show="bought.isBoughtListEmpty()">Nothing bought yet.</div>
     </div>
   </div>
 </div>
