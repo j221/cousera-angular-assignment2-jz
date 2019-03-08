@@ -24,6 +24,10 @@ function AlreadyBoughtController(ShoppingListCheckOffService) {
 	var bought = this;
 	bought.items = ShoppingListCheckOffService.getBoughtItems();
 	console.log(bought);
+
+	bought.itemReturned = function(index){
+		ShoppingListCheckOffService.itemReturned(index);
+	};
 };
 
 function ShoppingListCheckOffService(){
@@ -50,6 +54,11 @@ function ShoppingListCheckOffService(){
 	service.itemBought = function(index){
 		boughtItems.push(toBuyItems[index]);
 		toBuyItems.splice(index,1);
+	};
+
+	service.itemReturned = function(index){
+		toBuyItems.push(boughtItems[index]);
+		boughtItems.splice(index,1);
 	};
 
 	console.log(service);
