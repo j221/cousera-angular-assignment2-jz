@@ -38,7 +38,7 @@
        <li>Buy 10 cookies <button class="btn btn-default"><span class="glyphicon glyphicon-ok"></span> Bought</button></li> -->
        <li ng-repeat="item in toBuy.items">
          {{item.value}} of {{item.name}} 
-         <button class="btn btn-default"><span class="glyphicon glyphicon-ok"></span> Bought</button>
+         <button class="btn btn-default" ng-click='toBuy.itemBought($index)'><span class="glyphicon glyphicon-ok"></span> Bought</button>
        </li>
      </ul>
      <p>{{toBuy.testString}}</p>
