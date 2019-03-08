@@ -19,7 +19,11 @@ function ToBuyController(ShoppingListCheckOffService) {
 
 	toBuy.isToBuyListEmpty = function(){
 		return ShoppingListCheckOffService.isToBuyListEmpty();
-	}
+	};
+
+	toBuy.addItem = function(){
+		ShoppingListCheckOffService.addItem(toBuy.newItemName, toBuy.newItemQuantity);
+	};
 
 };
 
@@ -33,7 +37,8 @@ function AlreadyBoughtController(ShoppingListCheckOffService) {
 
 	bought.isBoughtListEmpty = function(){
 		return ShoppingListCheckOffService.isBoughtListEmpty();
-	}
+	};
+
 };
 
 function ShoppingListCheckOffService(){
@@ -73,13 +78,15 @@ function ShoppingListCheckOffService(){
 		return toBuyItems.length > 0 ? false : true;
 	};
 
+	service.addItem = function(name, quantity) {
+		return toBuyItems.push({'name': name, 'value': quantity});
+	};
+
 	//local functions
 	function _cutAndPushItem(fromArray,index,toArray){
 		toArray.push(fromArray[index]);
 		fromArray.splice(index,1);
 	}
-
-	// console.log(service);
 
 };
 
