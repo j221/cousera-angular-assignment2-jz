@@ -52,14 +52,18 @@ function ShoppingListCheckOffService(){
 	};
 
 	service.itemBought = function(index){
-		boughtItems.push(toBuyItems[index]);
-		toBuyItems.splice(index,1);
+		_cutAndPushItem(toBuyItems,index,boughtItems);
 	};
 
 	service.itemReturned = function(index){
-		toBuyItems.push(boughtItems[index]);
-		boughtItems.splice(index,1);
+		_cutAndPushItem(boughtItems,index,toBuyItems);
 	};
+
+	//local functions
+	function _cutAndPushItem(fromArray,index,toArray){
+		toArray.push(fromArray[index]);
+		fromArray.splice(index,1);
+	}
 
 	// console.log(service);
 
