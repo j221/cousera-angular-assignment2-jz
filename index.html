@@ -38,7 +38,12 @@
        <ul>
          <li ng-repeat="item in toBuy.items">
            {{item.value}} of {{item.name}} 
-           <button class="btn btn-default" ng-click='toBuy.itemBought($index)'><span class="glyphicon glyphicon-ok"></span> Bought</button>
+            <button class="btn btn-default" ng-click='toBuy.itemBought($index)'>
+              Bought
+            </button>
+            <button class="btn btn-default" ng-click='toBuy.deleteItem($index)'>
+              Delete
+            </button>
          </li>
        </ul>
        <div>
@@ -57,7 +62,9 @@
      <ul>
         <li ng-repeat="item in bought.items">
          {{item.value}} of {{item.name}} 
-         <button class="btn btn-default" ng-click='bought.itemReturned($index)'><span class="glyphicon glyphicon-ok"></span> Returned</button>
+         <button class="btn btn-default" ng-click='bought.itemReturned($index)'>
+          Returned
+         </button>
        </li>
      </ul>
      <div class="emptyMessage" ng-show="bought.isBoughtListEmpty()">Nothing bought yet.</div>

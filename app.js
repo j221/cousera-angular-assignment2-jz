@@ -25,6 +25,10 @@ function ToBuyController(ShoppingListCheckOffService) {
 		ShoppingListCheckOffService.addItem(toBuy.newItemName, toBuy.newItemQuantity);
 	};
 
+	toBuy.deleteItem = function(index){
+		ShoppingListCheckOffService.deleteItem(index);
+	}
+
 };
 
 function AlreadyBoughtController(ShoppingListCheckOffService) {
@@ -80,6 +84,10 @@ function ShoppingListCheckOffService(){
 
 	service.addItem = function(name, quantity) {
 		return toBuyItems.push({'name': name, 'value': quantity});
+	};
+
+	service.deleteItem = function(index){
+		toBuyItems.splice(index,1);
 	};
 
 	//local functions
