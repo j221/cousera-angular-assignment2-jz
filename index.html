@@ -35,6 +35,11 @@
     <!-- To Buy List -->
     <div class="col-md-6" ng-controller='ToBuyController as toBuy'>
        <h2>To Buy:</h2>
+        <div>
+          <input type="text" ng-model="toBuy.newItemName" placeholder="item name">
+          <input type="text" ng-model="toBuy.newItemQuantity" placeholder="quantity">
+          <button ng-click="toBuy.addItem();">Add Item To Shopping List</button>
+       </div>
        <ul>
          <li ng-repeat="item in toBuy.items">
            {{item.value}} of {{item.name}} 
@@ -46,11 +51,6 @@
             </button>
          </li>
        </ul>
-       <div>
-          <input type="text" ng-model="toBuy.newItemName" placeholder="item name">
-          <input type="text" ng-model="toBuy.newItemQuantity" placeholder="quantity">
-          <button ng-click="toBuy.addItem();">Add Item To Shopping List</button>
-       </div>
      <div class="emptyMessage" ng-show="toBuy.isToBuyListEmpty()">Everything is bought!</div>
     </div>
 

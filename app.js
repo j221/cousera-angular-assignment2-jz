@@ -4,59 +4,67 @@
 angular.module('ShoppingListCheckOff', [])
 .controller('ToBuyController', ToBuyController)
 .controller('AlreadyBoughtController', AlreadyBoughtController)
-.service('ShoppingListCheckOffService', ShoppingListCheckOffService);
+// name of provider function, does not relate to name of
+// provider injected to config
+.provider('ShoppingListCheckOff', ShoppingListCheckOffProv)  
+.config(Config);
 
-ToBuyController.$inject = ['ShoppingListCheckOffService'];
-AlreadyBoughtController.$inject = ['ShoppingListCheckOffService'];
 
-function ToBuyController(ShoppingListCheckOffService) {
+// injected provider came from servine name + 'Provider' string
+// service name is ShoppingListCheckOff
+// so result is ShoppingListCheckOffProvider
+Config.$inject = ['ShoppingListCheckOffProvider'];
+function Config(ShoppingListCheckOffProvider) {
+	console.log("i am in config.");
+	ShoppingListCheckOffProvider.defaults.something = 'something from config.';
+}
+
+
+ToBuyController.$inject = ['ShoppingListCheckOff'];
+AlreadyBoughtController.$inject = ['ShoppingListCheckOff'];
+
+function ToBuyController(ShoppingListCheckOff) {
 	var toBuy = this;
-	toBuy.items = ShoppingListCheckOffService.getToBuyItems();
+	toBuy.items = ShoppingListCheckOff.getToBuyItems();
+	toBuy.something = ShoppingListCheckOff.something;
 
 	toBuy.itemBought = function(index){
-		ShoppingListCheckOffService.itemBought(index);
+		ShoppingListCheckOff.itemBought(index);
 	};
 
 	toBuy.isToBuyListEmpty = function(){
-		return ShoppingListCheckOffService.isToBuyListEmpty();
+		return ShoppingListCheckOff.isToBuyListEmpty();
 	};
 
 	toBuy.addItem = function(){
-		ShoppingListCheckOffService.addItem(toBuy.newItemName, toBuy.newItemQuantity);
+		ShoppingListCheckOff.addItem(toBuy.newItemName, toBuy.newItemQuantity);
 	};
 
 	toBuy.deleteItem = function(index){
-		ShoppingListCheckOffService.deleteItem(index);
-	}
+		ShoppingListCheckOff.deleteItem(index);
+	};
 
 };
 
-function AlreadyBoughtController(ShoppingListCheckOffService) {
+function AlreadyBoughtController(ShoppingListCheckOff) {
 	var bought = this;
-	bought.items = ShoppingListCheckOffService.getBoughtItems();
+	bought.items = ShoppingListCheckOff.getBoughtItems();
 
 	bought.itemReturned = function(index){
-		ShoppingListCheckOffService.itemReturned(index);
+		ShoppingListCheckOff.itemReturned(index);
 	};
 
 	bought.isBoughtListEmpty = function(){
-		return ShoppingListCheckOffService.isBoughtListEmpty();
+		return ShoppingListCheckOff.isBoughtListEmpty();
 	};
 
 };
 
-function ShoppingListCheckOffService(){
+function ShoppingListCheckOffService(toBuyItems, boughtItems){
+
 	var service = this;
-
-	var toBuyItems = [
-		{ 'name': 'cookies', 'value': '10 bags'},
-		{ 'name': 'drinks', 'value': '10 bottles'}
-	];
-
-	var boughtItems = [
-		{ 'name': 'snacks', 'value': '5 bags'},
-		{ 'name': 'bananas', 'value': '5 pieces'},
-	];
+	var toBuyItems =  toBuyItems === undefined ? [] : toBuyItems;
+	var boughtItems = boughtItems === undefined ? [] : boughtItems;
 
 	service.getToBuyItems = function(){
 		return toBuyItems;
@@ -90,12 +98,38 @@ function ShoppingListCheckOffService(){
 		toBuyItems.splice(index,1);
 	};
 
-	//local functions
+	// local functions are hiden/invisible, when Service function
+	// is instantiated as Class (as you can see, following functions
+	// are not attached to 'service' variable.
 	function _cutAndPushItem(fromArray,index,toArray){
 		toArray.push(fromArray[index]);
 		fromArray.splice(index,1);
 	}
 
 };
+
+function ShoppingListCheckOffProv() {
+  var provider = this;
+
+  provider.defaults = {
+	toBuyItems: [
+		{ 'name': 'cookies', 'value': '10 bags'},
+		{ 'name': 'drinks', 'value': '10 bottles'}
+	],
+
+	boughtItems: [
+		{ 'name': 'snacks', 'value': '5 bags'},
+		{ 'name': 'bananas', 'value': '5 pieces'}
+	]
+  };
+
+  provider.$get = function () {
+    var shoppingCheckOffList = new ShoppingListCheckOffService(
+    		provider.defaults.toBuyItems,
+    		provider.defaults.boughtItems
+    	);
+    return shoppingCheckOffList;
+  };
+}
 
 })();
